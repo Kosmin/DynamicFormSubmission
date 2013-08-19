@@ -1,3 +1,6 @@
+// Author: Cosmin Atanasiu
+// Source: github.com/Kosmin/DynamicFormSubmission
+
 ;(function($, doc, win) {
   "use strict";
 	
