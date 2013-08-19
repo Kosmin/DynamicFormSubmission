@@ -47,7 +47,6 @@
 				fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
 			}
 			$( this.SELECTOR() ).html( fields_string );
-			alert( $( this.SELECTOR() ).html() );
 		}
 	};
 
