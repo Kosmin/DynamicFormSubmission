@@ -23,13 +23,17 @@
 												style="display:none; visibility:hidden; height:0px; width:0px;">\
 										</form>' );
 		},
-		register_button: function( button, callback ){
+		register_button: function( button, callback, delay_submit ){
 			button.on("click", function(e){
-				if ( callback != undefined ) {
+				if ( typeof callback !== "undefined" ) {
 					callback();
 				}
-				$.DFS_Form.submit();
-				e.preventDefault();
+        if( typeof delay_submit === "undefined" ) {
+          $.DFS_Form.submit();
+        }
+
+        //preventDefault and stopPropagation
+				return false;
 			});
 		},
 		add_field: function( name, value ) {
