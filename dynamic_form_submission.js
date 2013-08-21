@@ -17,7 +17,7 @@
       return this.method != "" && this.action != "";
     },
     init: function ( method, action ) {
-      this.fields = [];
+      this.fields = new Array();
       this.method = method;
       this.action = action;
       $("body").append( '<form id="' + this.ID + '"\
@@ -42,11 +42,7 @@
     add_field: function( name, value ) {
       var pos = this.fields.indexOf( name );
 
-      // remove existing fields with same name
-      if ( pos >= 0 ) {
-        this.fields.splice( name, fields.length );
-      }
-
+      // add new field into fields arra
       this.fields[ name ] = value;
     },
     submit: function() {
