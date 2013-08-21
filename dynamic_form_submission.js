@@ -13,6 +13,9 @@
     name : "",
     // these are fields that will be inserted into a virtual form dynamically.
     fields: [],
+    is_initialized: function() {
+      return this.method != "" && this.action != "";
+    },
     init: function ( method, action ) {
       this.fields = [];
       this.method = method;
