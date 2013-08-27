@@ -6,36 +6,30 @@
 
   $.DFS_Form = {
     BUTTON_REL : "data-dfs-register-button",
-    ID: "DynamicFormSubmissionsHandler",
-    SELECTOR: function() {
-      return "#" + this.ID; 
+    id: "",
+    selector: function() {
+      return "#" + this.id;
     },
     name : "",
-    // these are fields that will be inserted into a virtual form dynamically.
+    // these are fields that will be inserted/updated into an existing form dynamically
     fields: [],
     is_initialized: function() {
-      return this.method != "" && this.action != "";
+      return this.id != "";
     },
-    init: function ( method, action ) {
+    init: function ( form_id ) {
+      this.id = form_id;
       this.fields = new Array();
-      this.method = method;
-      this.action = action;
-      $("body").append( '<form id="' + this.ID + '"\
-                        action="' + action + '"\
-                        method="' + method + '"\
-                        style="display:none; visibility:hidden; height:0px; width:0px;">\
-                    </form>' );
     },
     register_button: function( button, callback, delay_submit ){
       button.on("click", function(e){
         if ( typeof callback !== "undefined" ) {
           callback();
         }
-        if( typeof delay_submit === "undefined" ) {
+        if( typeof delay_submit === "undefined" || delay_submit != "true" || delay_submit != true) {
           $.DFS_Form.submit();
         }
 
-        //preventDefault and stopPropagation
+        // preventDefault and stopPropagation
         return false;
       });
     },
@@ -48,10 +42,20 @@
     submit: function() {
       var fields_string = "";
       for( var name in this.fields ) {
-        fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
+        var existing_element = $( this.selector() ).children("input[name=" + name + "]");
+        if( existing_element.length <= 0 ) {
+          // hidden field not in form yet
+          fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
+          $( this.selector() ).prepend( fields_string );
+        }
+        else
+        {
+          // hidden element already exists
+          fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
+          existing_element.attr("value", this.fields[ name ])
+        }
       }
-      $( this.SELECTOR() ).html( fields_string );
-      $( this.SELECTOR() ).submit();
+      $( this.selector() ).submit();
     }
   };
 
