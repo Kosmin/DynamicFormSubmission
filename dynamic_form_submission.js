@@ -13,19 +13,19 @@
     name : "",
     // these are fields that will be inserted/updated into an existing form dynamically
     fields: [],
-    is_initialized: function() {
+    isInitialized: function() {
       return this.id != "";
     },
-    init: function ( form_id ) {
-      this.id = form_id;
+    init: function ( formId ) {
+      this.id = formId;
       this.fields = new Array();
     },
-    register_button: function( button, callback, delay_submit ){
+    registerButton: function( button, callback, delaySubmit ){
       button.on("click", function(e){
         if ( typeof callback !== "undefined" ) {
           callback();
         }
-        if( typeof delay_submit === "undefined" || delay_submit != "true" || delay_submit != true) {
+        if( typeof delaySubmit === "undefined" || delaySubmit != "true" || delaySubmit != true) {
           $.DFS_Form.submit();
         }
 
@@ -33,26 +33,26 @@
         return false;
       });
     },
-    add_field: function( name, value ) {
+    addField: function( name, value ) {
       var pos = this.fields.indexOf( name );
 
       // add new field into fields arra
       this.fields[ name ] = value;
     },
     submit: function() {
-      var fields_string = "";
+      var fieldsString = "";
       for( var name in this.fields ) {
-        var existing_element = $( this.selector() ).children("input[name=" + name + "]");
-        if( existing_element.length <= 0 ) {
+        var existingElement = $( this.selector() ).children("input[name=" + name + "]");
+        if( existingElement.length <= 0 ) {
           // hidden field not in form yet
-          fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
-          $( this.selector() ).prepend( fields_string );
+          fieldsString += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
+          $( this.selector() ).prepend( fieldsString );
         }
         else
         {
           // hidden element already exists
-          fields_string += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
-          existing_element.attr("value", this.fields[ name ])
+          fieldsString += '<input type="hidden" name="' + name + '" value="' + this.fields[ name ] + '" />';
+          existingElement.attr("value", this.fields[ name ])
         }
       }
       $( this.selector() ).submit();
@@ -60,7 +60,7 @@
   };
 
   $( "button[" + $.DFS_Form.BUTTON_REL + "]" ).each(function() {
-    $.DFS_Form.register_button( $(this) );
+    $.DFS_Form.registerButton( $(this) );
   });
 })(jQuery, document, window);
 //$.DFS_Form.init( "POST", "<address-to-submit-data>");
